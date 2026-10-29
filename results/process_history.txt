@@ -1,0 +1,5 @@
+Peak detection | Thu Oct 29 08:48:59 2026
+Peak refinement | Thu Oct 29 08:49:02 2026
+Retention time correction | Thu Oct 29 08:49:07 2026
+Peak grouping | Thu Oct 29 08:49:11 2026
+Missing peak filling | Thu Oct 29 08:49:16 2026

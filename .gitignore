@@ -1,0 +1,4 @@
+data/*
+!data/.gitkeep
+*.rds
+xcms_lcmsms_sintesis.md

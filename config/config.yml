@@ -1,0 +1,66 @@
+# Configuración del pipeline LC-MS/MS (xcms + RforMassSpectrometry)
+#
+# Todos los valores marcados con  # <AJUSTAR>  dependen del instrumento y de la
+# columna cromatográfica. NO son universales: se afinan mirando los EIC de
+# estándares internos (ver README, sección "Calibración").
+
+input:
+  # Formato de los archivos crudos ya convertidos: mzml | mzxml | cdf
+  format: "cdf"
+  # Carpeta con los archivos (relativa a la raíz del proyecto)
+  directory: "tests/data/faahKO"
+  # Patrón para listar archivos
+  pattern: "[.][Cc][Dd][Ff]$"
+  # CSV con una fila por archivo. Columnas obligatorias: file, sample_name,
+  # sample_group. Columna opcional: sample_type (study | qc | blank).
+  # Si se deja vacío (null) se deduce del nombre del archivo.
+  metadata: null
+
+rt:
+  # Recorte del rango de retención (segundos). null = no recortar.
+  min: null
+  max: null
+
+peak_detection:
+  # CentWaveParam
+  ppm: 25               # <AJUSTAR>  precisión del equipo (QTOF ~10-25, Orbitrap ~5-10)
+  peakwidth: [10, 60]   # <AJUSTAR>  ancho de pico esperado en segundos
+  snthresh: 20          # <AJUSTAR>  relación señal/ruido mínima
+  noise: 5000           # <AJUSTAR>  intensidad mínima absoluta
+  prefilter: [3, 1000]  # <AJUSTAR>  c(escaneos mínimos, intensidad mínima)
+  mzdiff: 0.001
+
+refine:
+  # MergeNeighboringPeaksParam: une picos partidos del mismo ion
+  expandRt: 2
+  expandMz: 0
+
+alignment:
+  method: "obiwarp"     # obiwarp | peakgroups
+  binSize: 0.6          # <AJUSTAR>
+
+grouping:
+  # PeakDensityParam
+  bw: 5                 # <AJUSTAR>  ventana de RT (s)
+  minFraction: 0.5      # fracción mínima de muestras de un grupo con el pico
+  binSize: 0.025        # <AJUSTAR>  ventana de m/z (Da)
+
+qc:
+  # PercentMissingFilter: descarta features con más de X% de missing por grupo
+  max_percent_missing: 30
+  # RsdFilter (solo tiene sentido si hay QC): descarta features con RSD > X
+  max_rsd: 0.3
+  use_rsd_filter: false
+
+output:
+  dir: "results"
+
+annotation:
+  # CSV con masas exactas NEUTRAS. Columnas: exactmass, name (+ rt opcional, en s)
+  database: "tests/data/demo_database.csv"
+  adduct: "[M+H]+"      # <AJUSTAR> según la ionización del método
+  ppm: 10               # <AJUSTAR> tolerancia de masa
+  rt_tolerance: 30      # s; solo se usa si la base trae columna 'rt'
+  # Biblioteca de espectros MS2 (MGF). null = omitir paso MS2
+  ms2_library: null
+  ms2_score: 0.7

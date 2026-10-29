@@ -1,0 +1,15 @@
+Channels:
+  - conda-forge
+  - bioconda
+Dependencies:
+  - r-base=4.4
+  - bioconductor-xcms=4.4.0
+  - bioconductor-metaboannotation=1.10.0
+  - bioconductor-compounddb=1.10.0
+  - bioconductor-msbackendmgf=1.14.0
+  - bioconductor-msdatahub=1.6.0
+  - bioconductor-faahko=1.46.0
+  - r-yaml=2.3.12
+  - r-pheatmap=1.0.13
+  - r-rmarkdown
+  - r-ggplot2
